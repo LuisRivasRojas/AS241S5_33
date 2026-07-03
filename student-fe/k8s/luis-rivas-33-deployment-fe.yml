@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fe-deployment
+  namespace: luis-rivas-fe
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: student-fe
+  template:
+    metadata:
+      labels:
+        app: student-fe
+    spec:
+      containers:
+        - name: student-fe
+          image: luisrivas3/luis-rivas-fe:1.0
+          ports:
+            - containerPort: 80

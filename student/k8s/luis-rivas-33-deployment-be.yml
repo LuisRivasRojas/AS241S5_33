@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-deployment
+  namespace: luis-rivas-be
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: student-app
+  template:
+    metadata:
+      labels:
+        app: student-app
+    spec:
+      containers:
+        - name: student-app
+          image: luisrivas3/luis-rivas-be:1.0
+          ports:
+            - containerPort: 8090
+          env:
+            - name: APP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: student-secret
+                  key: APP_PORT
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: student-secret
+                  key: DB_URL
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: student-secret
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: student-secret
+                  key: DB_PASSWORD

@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+
+  app:
+    build: .
+    container_name: student-app
+    ports:
+      - "8091:8090"
+    environment:
+      APP_PORT: 8090
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - mysql
+    networks:
+      - student-net
+
+  mysql:
+    image: mysql:8.0
+    container_name: student-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: studentdb
+    networks:
+      - student-net
+
+  nginx:
+    image: nginx:alpine
+    container_name: student-nginx
+    ports:
+      - "8092:80"
+    networks:
+      - student-net
+
+networks:
+  student-net:
+    driver: bridge
